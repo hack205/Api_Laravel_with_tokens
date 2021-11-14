@@ -5,15 +5,100 @@ namespace App\Http\Controllers;
 use App\Models\sims;
 use Illuminate\Http\Request;
 
+/**
+* @OA\Info(title="API Sims", version="1.0"),
+* @OA\SecurityScheme(
+*      securityScheme="bearerAuth",
+*      in="header",
+*      name="bearerAuth",
+*      type="http",
+*      scheme="bearer",
+*      bearerFormat="JWT",
+* ),
+* @OA\Server(url="http://localhost")
+*/
+
 class SimsController extends Controller
 {
-
+    /**
+    * @OA\Get(
+    *     path="/api/get_sims",
+    *     security={{"bearerAuth":{}}},
+    *     summary="Mostrar sims",
+    *     @OA\Contact(
+    *         email="contact@mysite.com"
+    *     ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="Mostrar todos los sims disponibles."
+    *     ),
+    *     @OA\Response(
+    *         response="default",
+    *         description="Ha ocurrido un error.",
+    *         
+    *     )
+    * ),
+    * )
+    */
     public function getSims(sims $datosSim)
     {
         $datosSim = sims::all();
         return $datosSim;
     }
-
+    /**
+    * @OA\POST(
+    *     path="/api/insert_sim/",
+    *     security={{"bearerAuth":{}}},
+    *     summary="Crear Sim ",
+    *     @OA\Response(
+    *         response=200,
+    *         description="Sim record created"
+    *     ),
+    * @OA\Parameter(
+    *         name="id",
+    *         in="query",
+    *         example=0001,
+    *         required=true,
+    *     ),
+    * @OA\Parameter(
+    *         name="phone",
+    *         in="query",
+    *         example=4924920534,
+    *         required=true,
+    *         @OA\Schema(
+    *           type="integer",
+    *           format="int64",
+    *            minimum= 1,
+    *            maximum= 9999999999
+    *         )
+    *         
+    *     ),
+    * @OA\Parameter(
+    *         name="ICCID",
+    *         in="query",
+    *         example=00000001,
+    *         required=true,
+    *     ),
+    * @OA\Parameter(
+    *         name="COMPANY",
+    *         in="query",
+    *         example="0russ",
+    *         required=true,
+    *     ),
+    * @OA\Parameter(
+    *         name="CELLPHONE_MINUTES",
+    *         in="query",
+    *         example=200,
+    *         required=true,
+    *     ),
+    * @OA\Response(
+    *         response="default",
+    *         description="Sims not found.",
+    *         
+    *     )
+    * ),
+    * )
+    */
     public function createSim(Request $request)
     {
         $datosSim = new sims;
@@ -47,11 +132,37 @@ class SimsController extends Controller
             ], 404);
         }
     }
-
-    public function deleteSim($id)
+    /**
+    * @OA\POST(
+    *     path="/api/delete_sim",
+    *     security={{"bearerAuth":{}}},
+    *     summary="Eliminar Sim en especificó",
+    *     @OA\Response(
+    *         response=200,
+    *         description="records deleted"
+    *     ),
+    * @OA\Parameter(
+    *         name="id",
+    *         @OA\Schema(
+    *             type="integer",
+    *         ),
+    *         in="query",
+    *         description="offset",
+    *         example=1,
+    *         required=true,
+    *     ),
+    *     @OA\Response(
+    *         response="default",
+    *         description="Sim not found.",
+    *         
+    *     )
+    * ),
+    * )
+    */
+    public function deleteSim(Request $request)
     {
-        if (sims::where('id', $id)->exists()) {
-            $datosSim = sims::find($id);
+        if (sims::where('id', $request->id)->exists()) {
+            $datosSim = sims::find($request->id);
             $datosSim->delete();
 
             return response()->json([

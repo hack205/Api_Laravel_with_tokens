@@ -1,0 +1,135 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Sims",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost"
+        }
+    ],
+    "paths": {
+        "/api/get_sims": {
+            "get": {
+                "summary": "Mostrar sims",
+                "operationId": "5c2eadd4fce773869ca2f2c13fe3a4ed",
+                "responses": {
+                    "200": {
+                        "description": "Mostrar todos los sims disponibles."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/insert_sim/": {
+            "post": {
+                "summary": "Crear Sim ",
+                "operationId": "a762be2632bc201aab21033fdcefcd24",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "example": 1
+                    },
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "maximum": 9999999999,
+                            "minimum": 1
+                        },
+                        "example": 4924920534
+                    },
+                    {
+                        "name": "ICCID",
+                        "in": "query",
+                        "required": true,
+                        "example": 1
+                    },
+                    {
+                        "name": "COMPANY",
+                        "in": "query",
+                        "required": true,
+                        "example": "0russ"
+                    },
+                    {
+                        "name": "CELLPHONE_MINUTES",
+                        "in": "query",
+                        "required": true,
+                        "example": 200
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sim record created"
+                    },
+                    "default": {
+                        "description": "Sims not found."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/delete_sim": {
+            "post": {
+                "summary": "Eliminar Sim en especificó",
+                "operationId": "861040b66afa33e8da0660eca8a73d3f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "offset",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "records deleted"
+                    },
+                    "default": {
+                        "description": "Sim not found."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}

@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('insert_sim','App\Http\Controllers\SimsController@createSim');
 Route::post('update_sim/{id}','App\Http\Controllers\SimsController@updateSim');
-Route::post('delete_sim/{id}','App\Http\Controllers\SimsController@deleteSim');
+Route::post('delete_sim','App\Http\Controllers\SimsController@deleteSim');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -32,6 +33,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return auth()->user();
     });
     Route::get('get_sims','App\Http\Controllers\SimsController@getSims');
-    // API route for logout user
     Route::post('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
 });
