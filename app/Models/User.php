@@ -41,4 +41,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function roles_and_permissions() {
+        $roles = $this->belongsToMany(
+            rol::class,
+            (new gs_api_user_roles())->getTable(),
+            'user_id',
+            'role_id'
+        );
+
+        return $roles->with(['permissions']);
+    }
 }
